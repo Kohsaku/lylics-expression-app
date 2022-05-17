@@ -9,12 +9,26 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ButtonBase from "@mui/material/ButtonBase";
+import { styled } from "@mui/material/styles";
+import LockIcon from "@mui/icons-material/Lock";
+import Modal from "@mui/material/Modal";
+import SendIcon from "@mui/icons-material/Send";
+import CameraIcon from "@mui/icons-material/Camera";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 function Copyright(props: any) {
   return (
@@ -34,6 +48,26 @@ function Copyright(props: any) {
   );
 }
 
+const CustomTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#001000",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#001000",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#001000",
+    },
+    "&:hover fieldset": {
+      borderColor: "#001000",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#001000",
+    },
+  },
+});
+
 const theme = createTheme();
 
 const Auth: React.FC = () => {
@@ -42,6 +76,8 @@ const Auth: React.FC = () => {
   const [username, setUsername] = useState("");
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
   const [isLogin, setIsLogin] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -84,7 +120,7 @@ const Auth: React.FC = () => {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "#800000" }}>
-              <AccountCircleRoundedIcon />
+              <LockIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               {isLogin ? "Login" : "Register"}
@@ -97,7 +133,7 @@ const Auth: React.FC = () => {
             >
               {!isLogin && (
                 <>
-                  <TextField
+                  <CustomTextField
                     variant="outlined"
                     margin="normal"
                     required
@@ -115,13 +151,13 @@ const Auth: React.FC = () => {
                     <IconButton>
                       <label>
                         <AccountCircleIcon fontSize="large" />
-                        <input type="file" />
+                        <input type="file" style={{ display: "none" }} />
                       </label>
                     </IconButton>
                   </Box>
                 </>
               )}
-              <TextField
+              <CustomTextField
                 margin="normal"
                 required
                 fullWidth
@@ -134,7 +170,7 @@ const Auth: React.FC = () => {
                   setEmail(e.target.value);
                 }}
               />
-              <TextField
+              <CustomTextField
                 margin="normal"
                 required
                 fullWidth
@@ -148,7 +184,15 @@ const Auth: React.FC = () => {
                 }}
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={
+                  <Checkbox
+                    value="remember"
+                    sx={{
+                      color: "#001000",
+                      "&.Mui-checked": { color: "#001000" },
+                    }}
+                  />
+                }
                 label="Remember me"
               />
               <Button
@@ -156,7 +200,7 @@ const Auth: React.FC = () => {
                 fullWidth
                 variant="contained"
                 sx={{
-                  mt: 3,
+                  mt: 2,
                   mb: 2,
                   bgcolor: "#001000",
                   "&: hover": {
@@ -166,16 +210,62 @@ const Auth: React.FC = () => {
               >
                 Sign In
               </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                startIcon={<CameraIcon />}
+                sx={{
+                  mb: 1,
+                  bgcolor: "#001000",
+                  "&: hover": {
+                    background: "#800000",
+                  },
+                }}
+              >
+                SignIn with Google
+              </Button>
+              <Modal open={openModal} onClose={() => setOpenModal(false)}>
+                <Paper
+                  style={getModalStyle()}
+                  sx={{
+                    outline: "none",
+                    position: "absolute",
+                    width: 400,
+                    borderRadius: 10,
+                    backgroundColor: "white",
+                    boxShadow: theme.shadows[5],
+                    padding: theme.spacing(10),
+                  }}
+                >
+                  <CustomTextField
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    type="email"
+                    name="email"
+                    label="Reset E-mail"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setResetEmail(e.target.value);
+                    }}
+                  />
+                  <IconButton>
+                    <SendIcon />
+                  </IconButton>
+                </Paper>
+              </Modal>
               <Grid container>
                 <Grid item xs>
-                  <Link
-                    href="#"
-                    variant="body2"
-                    underline="none"
-                    sx={{ color: "#001000" }}
-                  >
-                    Forgot password?
-                  </Link>
+                  <ButtonBase onClick={() => setOpenModal(true)}>
+                    <Link
+                      href="#"
+                      variant="body2"
+                      underline="none"
+                      sx={{ color: "#001000" }}
+                    >
+                      Forgot password?
+                    </Link>
+                  </ButtonBase>
                 </Grid>
                 <Grid item>
                   <ButtonBase onClick={() => setIsLogin(!isLogin)}>
@@ -185,7 +275,9 @@ const Auth: React.FC = () => {
                       underline="none"
                       sx={{ color: "#001000" }}
                     >
-                      {"Don't have an account? Sign Up"}
+                      {isLogin
+                        ? "Don't have an account? Sign Up"
+                        : "Back to login"}
                     </Link>
                   </ButtonBase>
                 </Grid>
