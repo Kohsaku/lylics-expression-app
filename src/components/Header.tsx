@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 const Header: React.FC = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: "#002E00" }}>
+      <AppBar position="static" sx={{ bgcolor: "#001000", height: "8vh" }}>
         <Toolbar>
           <IconButton
             size="large"
