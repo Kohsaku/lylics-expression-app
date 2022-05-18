@@ -68,6 +68,16 @@ const CustomTextField = styled(TextField)({
   },
 });
 
+const avatarImageStyle = {
+  cursor: "pointer",
+  color: "gray",
+};
+
+const avatarAddedImageStyle = {
+  cursor: "pointer",
+  color: "#001000",
+};
+
 const theme = createTheme();
 
 const Auth: React.FC = () => {
@@ -78,6 +88,13 @@ const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+
+  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0]) {
+      setAvatarImage(e.target.files![0]);
+      e.target.value = "";
+    }
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -150,8 +167,19 @@ const Auth: React.FC = () => {
                   <Box textAlign="center">
                     <IconButton>
                       <label>
-                        <AccountCircleIcon fontSize="large" />
-                        <input type="file" style={{ display: "none" }} />
+                        <AccountCircleIcon
+                          fontSize="large"
+                          sx={
+                            avatarImage
+                              ? avatarAddedImageStyle
+                              : avatarImageStyle
+                          }
+                        />
+                        <input
+                          type="file"
+                          style={{ display: "none" }}
+                          onChange={onChangeImageHandler}
+                        />
                       </label>
                     </IconButton>
                   </Box>
