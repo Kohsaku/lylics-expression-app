@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 const CurrentFeed: React.FC = () => {
   const [testData, setTestData] = useState([
@@ -27,9 +27,21 @@ const CurrentFeed: React.FC = () => {
         flexDirection: "column",
       }}
     >
-      {testData.map((data) => (
-        <Box>{data.artist}</Box>
-      ))}
+      <Typography variant="h5">最近のフィード</Typography>
+      <Grid
+        container
+        flexDirection="column"
+        sx={{ mt: 3, alignItems: "center" }}
+      >
+        {testData.map((data) => (
+          <Grid item>
+            <Box p={4} sx={{ border: "1px solid grey" }}>
+              <Typography variant="h6">{data.song}</Typography>
+              <Typography variant="h6">{data.artist}</Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };

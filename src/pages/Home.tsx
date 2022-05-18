@@ -1,6 +1,7 @@
 import React from "react";
-import { Grid, Box, TextField, Typography, Button } from "@mui/material";
+import { Grid, Box, TextField, Typography, Button, Fab } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import AddIcon from "@mui/icons-material/Add";
 import CurrentFeed from "../components/CurrentFeed";
 
 const CustomTextField = styled(TextField)({
@@ -86,6 +87,19 @@ const Home: React.FC = () => {
         <Grid item xs={false} sm={4} md={7} component={Box}>
           <CurrentFeed />
         </Grid>
+        <Fab
+          aria-label="add"
+          sx={{
+            mb: 1,
+            ml: 5,
+            bgcolor: "#001000",
+            "&: hover": {
+              background: "#800000",
+            },
+          }}
+        >
+          <AddIcon sx={{ color: "#ffffff" }} />
+        </Fab>
       </Grid>
     </ThemeProvider>
   );
