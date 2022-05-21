@@ -33,73 +33,74 @@ const Home: React.FC = () => {
         <Grid item xs={12} sm={8} md={5}>
           <Box
             sx={{
-              my: 8,
+              my: 6,
               mx: 4,
               display: "flex",
-              flexDirection: "column",
             }}
           >
-            <Typography variant="h6" sx={{ margin: "2vh" }}>
-              曲名から探す
-            </Typography>
-            <Grid item>
-              <CustomTextField fullWidth id="song" label="Song" name="song" />
-              <Button
-                variant="contained"
+            <Grid item flexDirection="column" sx={{ width: "100%" }}>
+              <Typography variant="h6" sx={{ margin: "2vh" }}>
+                曲名から探す
+              </Typography>
+              <Grid item>
+                <CustomTextField fullWidth id="song" label="Song" name="song" />
+                <Button
+                  variant="contained"
+                  sx={{
+                    mt: 1,
+                    ml: 1,
+                    bgcolor: "#001000",
+                    "&: hover": {
+                      background: "#800000",
+                    },
+                  }}
+                >
+                  検索
+                </Button>
+              </Grid>
+              <Typography variant="h6" sx={{ margin: "2vh" }}>
+                アーティストから探す
+              </Typography>
+              <Grid>
+                <CustomTextField
+                  fullWidth
+                  id="artist"
+                  label="Artist"
+                  name="artist"
+                />
+                <Button
+                  variant="contained"
+                  sx={{
+                    mt: 1,
+                    ml: 1,
+                    bgcolor: "#001000",
+                    "&: hover": {
+                      background: "#800000",
+                    },
+                  }}
+                >
+                  検索
+                </Button>
+              </Grid>
+              <Fab
+                aria-label="add"
                 sx={{
-                  mt: 1,
-                  ml: 1,
+                  mt: 10,
+                  ml: 4,
                   bgcolor: "#001000",
                   "&: hover": {
                     background: "#800000",
                   },
                 }}
               >
-                検索
-              </Button>
-            </Grid>
-            <Typography variant="h6" sx={{ margin: "2vh" }}>
-              アーティストから探す
-            </Typography>
-            <Grid>
-              <CustomTextField
-                fullWidth
-                id="artist"
-                label="Artist"
-                name="artist"
-              />
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 1,
-                  ml: 1,
-                  bgcolor: "#001000",
-                  "&: hover": {
-                    background: "#800000",
-                  },
-                }}
-              >
-                検索
-              </Button>
+                <AddIcon sx={{ color: "#ffffff" }} />
+              </Fab>
             </Grid>
           </Box>
         </Grid>
         <Grid item xs={false} sm={4} md={7} component={Box}>
           <CurrentFeed />
         </Grid>
-        <Fab
-          aria-label="add"
-          sx={{
-            mb: 1,
-            ml: 5,
-            bgcolor: "#001000",
-            "&: hover": {
-              background: "#800000",
-            },
-          }}
-        >
-          <AddIcon sx={{ color: "#ffffff" }} />
-        </Fab>
       </Grid>
     </ThemeProvider>
   );
