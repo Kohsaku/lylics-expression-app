@@ -3,53 +3,16 @@ import {
   Box,
   Button,
   Typography,
-  InputBase,
+  TextField,
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
   FormLabel,
   Grid,
+  Paper,
 } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
-import { width } from "@mui/system";
-
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-  "label + &": {
-    marginTop: theme.spacing(3),
-  },
-  "& .MuiInputBase-input": {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    width: "auto",
-    padding: "10px 12px",
-    transition: theme.transitions.create([
-      "border-color",
-      "background-color",
-      "box-shadow",
-    ]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
-      borderColor: theme.palette.primary.main,
-    },
-  },
-}));
 
 const Post: React.FC = () => {
   const [lylics, setLylics] = useState(
@@ -71,19 +34,21 @@ const Post: React.FC = () => {
       >
         英語の歌詞をインポートする
       </Button>
-      <Grid container>
-        <Grid item flexDirection="column">
+      <Grid container xs={12}>
+        <Grid item>
           <Typography variant="h6">曲名</Typography>
           <Typography variant="h6">アーティスト名</Typography>
         </Grid>
-        <Typography variant="h6" sx={{ lineHeight: 4, position: "static" }}>
-          {lylics}
-        </Typography>
-        <BootstrapInput
-          id="bootstrap-input"
-          fullWidth={true}
-          sx={{ lineHeight: 4, position: "static", top: "10%" }}
-        />
+        <Grid item flexDirection="row">
+          <Paper variant="outlined">
+            <Typography variant="h6" sx={{ lineHeight: 4, position: "static" }}>
+              {lylics}
+            </Typography>
+          </Paper>
+          <Grid item>
+            <TextField InputLabelProps={{ shrink: false }} />
+          </Grid>
+        </Grid>
         <FormControl>
           <FormLabel>最近のフィードへの表示</FormLabel>
           <RadioGroup row>
