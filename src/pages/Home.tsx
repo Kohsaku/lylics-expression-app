@@ -1,8 +1,21 @@
-import React from "react";
-import { Grid, Box, TextField, Typography, Button, Fab } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Grid,
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Fab,
+  Paper,
+} from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import CurrentFeed from "../components/CurrentFeed";
+import SearchModal from "../components/SearchModal";
+
+type HANDLE_CLOSE = {
+  (): void;
+};
 
 const CustomTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -27,6 +40,16 @@ const CustomTextField = styled(TextField)({
 const theme = createTheme();
 
 const Home: React.FC = () => {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleSearchOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose: HANDLE_CLOSE = () => {
+    setOpenModal(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid component="main" container>
@@ -54,6 +77,7 @@ const Home: React.FC = () => {
                       background: "#800000",
                     },
                   }}
+                  onClick={handleSearchOpen}
                 >
                   検索
                 </Button>
@@ -70,6 +94,7 @@ const Home: React.FC = () => {
                 />
                 <Button
                   variant="contained"
+                  onClick={handleSearchOpen}
                   sx={{
                     mt: 1,
                     ml: 1,
@@ -102,6 +127,7 @@ const Home: React.FC = () => {
           <CurrentFeed />
         </Grid>
       </Grid>
+      <SearchModal open={openModal} close={handleClose} />
     </ThemeProvider>
   );
 };

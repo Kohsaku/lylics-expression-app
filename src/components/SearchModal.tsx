@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import {
-  Box,
-  Grid,
-  Typography,
+  Modal,
   Paper,
+  Typography,
+  Grid,
   ButtonBase,
   Avatar,
+  Box,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const CurrentFeed: React.FC = () => {
+interface PROPS {
+  open: boolean;
+  close: any;
+}
+
+const SearchModal: React.FC<PROPS> = (props) => {
   const [testData, setTestData] = useState([
     {
       translater: "userA",
@@ -36,19 +42,16 @@ const CurrentFeed: React.FC = () => {
       liked: 10,
     },
   ]);
+
   return (
-    <Box sx={{ my: 6 }}>
-      <Typography variant="h5">最近のフィード</Typography>
-      <Box
-        sx={{
-          mx: 4,
-        }}
-      >
+    <Modal open={props.open} onClose={props.close} sx={{ width: "80%" }}>
+      <Paper>
+        <Typography variant="h6">検索結果</Typography>
         <Grid container xs={12} sx={{ mt: 3 }}>
           <Paper
             variant="outlined"
             elevation={24}
-            sx={{ width: "100%", maxHeight: "70vh", overflow: "auto" }}
+            sx={{ width: "40%", maxHeight: "70vh", overflow: "auto" }}
           >
             <Grid item>
               {testData.map((data) => (
@@ -95,9 +98,9 @@ const CurrentFeed: React.FC = () => {
             </Grid>
           </Paper>
         </Grid>
-      </Box>
-    </Box>
+      </Paper>
+    </Modal>
   );
 };
 
-export default CurrentFeed;
+export default SearchModal;
