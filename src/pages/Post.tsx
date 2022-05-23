@@ -34,18 +34,21 @@ const Post: React.FC = () => {
       >
         英語の歌詞をインポートする
       </Button>
-      <Grid container xs={12}>
+      <Grid container>
         <Grid item>
           <Typography variant="h6">曲名</Typography>
           <Typography variant="h6">アーティスト名</Typography>
         </Grid>
-        <Grid item flexDirection="row">
-          <Paper variant="outlined">
-            <Typography variant="h6" sx={{ lineHeight: 4, position: "static" }}>
-              {lylics}
-            </Typography>
-          </Paper>
+        <Grid item component={Box} flexDirection="row">
           <Grid item>
+            <Paper variant="outlined">
+              <Typography variant="h6" sx={{ lineHeight: 4 }}>
+                {lylics}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item component={Paper}>
+            <Typography variant="h6">和訳</Typography>
             <TextField InputLabelProps={{ shrink: false }} />
           </Grid>
         </Grid>
