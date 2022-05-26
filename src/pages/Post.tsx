@@ -12,7 +12,6 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
 
 const Post: React.FC = () => {
   const [lylics, setLylics] = useState(
@@ -39,17 +38,19 @@ const Post: React.FC = () => {
           <Typography variant="h6">曲名</Typography>
           <Typography variant="h6">アーティスト名</Typography>
         </Grid>
-        <Grid item component={Box} flexDirection="row">
-          <Grid item>
+        <Grid item direction="row" xs={12}>
+          <Grid item xs={5}>
             <Paper variant="outlined">
-              <Typography variant="h6" sx={{ lineHeight: 4 }}>
+              <Typography variant="h6" sx={{ lineHeight: 2 }}>
                 {lylics}
               </Typography>
             </Paper>
           </Grid>
-          <Grid item component={Paper}>
-            <Typography variant="h6">和訳</Typography>
-            <TextField InputLabelProps={{ shrink: false }} />
+          <Grid item xs={5}>
+            <Paper variant="outlined">
+              <Typography variant="h6">和訳</Typography>
+              <TextField InputLabelProps={{ shrink: false }} />
+            </Paper>
           </Grid>
         </Grid>
         <FormControl>
