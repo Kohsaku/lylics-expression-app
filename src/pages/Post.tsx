@@ -51,9 +51,9 @@ const Post: React.FC = () => {
           mt: 2,
           mb: 2,
           ml: 5,
-          bgcolor: "#001000",
+          bgcolor: "#707575",
           "&: hover": {
-            background: "#800000",
+            background: "#001000",
           },
         }}
       >
@@ -105,10 +105,43 @@ const Post: React.FC = () => {
         </Grid>
         <Grid item container justifyContent="flex-end">
           <FormControl sx={{ mr: 5 }}>
-            <FormLabel>最近のフィードへの表示</FormLabel>
+            <FormLabel
+              sx={{
+                color: "#004000",
+                "&.Mui-focused": {
+                  color: "#004000",
+                },
+              }}
+            >
+              最近のフィードへの表示
+            </FormLabel>
             <RadioGroup row>
-              <FormControlLabel value="on" control={<Radio />} label="ON" />
-              <FormControlLabel value="off" control={<Radio />} label="OFF" />
+              <FormControlLabel
+                value="on"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#004000",
+                      },
+                    }}
+                  />
+                }
+                label="ON"
+              />
+              <FormControlLabel
+                value="off"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#004000",
+                      },
+                    }}
+                  />
+                }
+                label="OFF"
+              />
             </RadioGroup>
           </FormControl>
           <Button
@@ -120,7 +153,7 @@ const Post: React.FC = () => {
               mr: 2,
               bgcolor: "#001000",
               "&: hover": {
-                background: "#800000",
+                background: "#004000",
               },
             }}
           >
