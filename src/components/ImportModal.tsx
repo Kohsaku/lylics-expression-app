@@ -6,9 +6,6 @@ import {
   TextField,
   Button,
   Grid,
-  ButtonBase,
-  Avatar,
-  Box,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -39,12 +36,17 @@ const CustomTextField = styled(TextField)({
 
 const ImportModal: React.FC<PROPS> = (props) => {
   return (
-    <Modal open={props.open} onClose={props.close} sx={{ width: "60%" }}>
+    <Modal
+      open={props.open}
+      onClose={props.close}
+      sx={{ width: "50%", top: "30%", left: "25%" }}
+    >
       <Paper
         sx={{
           bgcolor: "#001000",
           color: "#ffffff",
           height: "40vh",
+          borderRadius: "25px",
         }}
       >
         <Grid container justifyContent="center" sx={{ pt: 8 }}>
@@ -53,7 +55,7 @@ const ImportModal: React.FC<PROPS> = (props) => {
             <Grid item container direction="row">
               <CustomTextField
                 InputLabelProps={{ shrink: false }}
-                sx={{ background: "#ffffff", width: "30vw" }}
+                sx={{ background: "#ffffff", width: "30vw", mr: 1 }}
               />
               <Button
                 type="submit"
@@ -69,12 +71,12 @@ const ImportModal: React.FC<PROPS> = (props) => {
               </Button>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item sx={{ p: 2 }}>
             <Typography variant="h6">アーティスト名</Typography>
             <Grid item container direction="row">
               <CustomTextField
                 InputLabelProps={{ shrink: false }}
-                sx={{ background: "#ffffff", width: "30vw" }}
+                sx={{ background: "#ffffff", width: "30vw", mr: 1 }}
                 fullWidth
               />
               <Button
