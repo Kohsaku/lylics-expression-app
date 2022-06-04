@@ -41,18 +41,9 @@ const CustomTextField = styled(TextField)({
 });
 
 const OverView: React.FC = () => {
-  const [openModal, setOpenModal] = useState(false);
   const [lylics, setLylics] = useState(
     "Standing in line to see the show tonight And there's a light on, heavy glow. By the way, I tried to say I'd be there waiting for Dani, the girl, is singing songs to me beneath the marquee, overload. Steak knife, card shark Con job, boot cut Skin that flick, she’s such a little DJ To get there quick by street but not the freeway Turn that trick to make a little leeway Beat that nic, but not the way that we playDogtown, blood bath Rib cage, soft tail Standing in line to see the show tonight And there’s a light on, heavy glow By the way, I tried to say I’d be there waiting for Black jack, dope dick Pawn shop, quick pick Kiss that dyke, I know you want to hold one Not on strike but I’m about to bowl one Bite that mic, I know you never stole one Girls that like a story, so I told one Song bird, main line Cash back, hard top"
   );
-
-  const handleSearchOpen = () => {
-    setOpenModal(true);
-  };
-
-  const handleClose: HANDLE_CLOSE = () => {
-    setOpenModal(false);
-  };
 
   return (
     <Box>
@@ -71,7 +62,9 @@ const OverView: React.FC = () => {
           <Typography variant="subtitle2" color="#aaaaaa" sx={{ mr: 1 }}>
             翻訳者
           </Typography>
-          <Avatar alt="sample" src="../../public/avatar2.png" sx={{ mr: 1 }} />
+          <IconButton>
+            <Avatar alt="sample" src="../../public/avatar2.png" />
+          </IconButton>
           <Typography variant="subtitle2" color="#aaaaaa" sx={{ mr: 3 }}>
             name
           </Typography>

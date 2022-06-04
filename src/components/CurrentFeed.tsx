@@ -37,7 +37,7 @@ const CurrentFeed: React.FC = () => {
     },
   ]);
   return (
-    <Box sx={{ my: 6 }}>
+    <Box sx={{ my: 2 }}>
       <Typography variant="h5">最近のフィード</Typography>
       <Box
         sx={{
@@ -48,7 +48,7 @@ const CurrentFeed: React.FC = () => {
           <Paper
             variant="outlined"
             elevation={24}
-            sx={{ width: "100%", maxHeight: "70vh", overflow: "auto" }}
+            sx={{ width: "100%", maxHeight: "65vh", overflow: "auto" }}
           >
             <Grid item>
               {testData.map((data) => (

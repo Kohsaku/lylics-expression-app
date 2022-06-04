@@ -115,7 +115,7 @@ const Home: React.FC = () => {
             </Grid>
           </Box>
         </Grid>
-        <Grid item xs={false} sm={4} md={7} component={Box}>
+        <Grid item xs={false} sm={4} md={7} component={Box} sx={{ pt: 6 }}>
           <CurrentFeed />
         </Grid>
       </Grid>
