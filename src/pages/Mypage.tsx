@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -12,8 +12,49 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CurrentFeed from "../components/CurrentFeed";
+import FavoriteModal from "../components/FavoriteModal";
+
+type HANDLE_CLOSE = {
+  (): void;
+};
 
 const Mypage: React.FC = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const [testData, setTestData] = useState([
+    {
+      translater: "userA",
+      artist: "Red hot chilli peppers",
+      song: "By the way",
+      wm: "Standing light.......",
+      jm: "今夜のショーを見るために......",
+      liked: 21,
+    },
+    {
+      translater: "userA",
+      artist: "Red hot chilli peppers",
+      song: "By the way",
+      wm: "Standing light.......",
+      jm: "今夜のショーを見るために......",
+      liked: 10,
+    },
+    {
+      translater: "userA",
+      artist: "Red hot chilli peppers",
+      song: "By the way",
+      wm: "Standing light.......",
+      jm: "今夜のショーを見るために......",
+      liked: 10,
+    },
+  ]);
+
+  const handleSearchOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose: HANDLE_CLOSE = () => {
+    setOpenModal(false);
+  };
+
   return (
     <Box>
       <Grid container direction="row" alignItems="center" sx={{ pl: 4, pt: 2 }}>
@@ -53,9 +94,11 @@ const Mypage: React.FC = () => {
             background: "#800000",
           },
         }}
+        onClick={() => setOpenModal(true)}
       >
         いいねした投稿
       </Button>
+      <FavoriteModal open={openModal} close={handleClose} test={testData} />
     </Box>
   );
 };
