@@ -1,6 +1,5 @@
 import React from "react";
-import { Modal, Paper, TextField, Grid, Box, ButtonBase } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Modal, Paper, Grid, Box, ButtonBase, Typography } from "@mui/material";
 
 interface PROPS {
   open: boolean;
@@ -21,32 +20,73 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
           color: "#ffffff",
           height: "70vh",
           borderRadius: "25px",
+          alignItems: "center",
+          pt: 6,
         }}
       >
-        <Grid container justifyContent="center" sx={{ pt: 8 }}>
-          {props.test.map((data: any) => (
-            <ButtonBase>
-              <Box
-                p={3}
-                sx={{
-                  border: "1px solid #aaaaaa",
-                  textAlign: "left",
-                }}
-              >
-                {data.translater}
-                {data.song}
-                {data.artist}
-                {data.liked}
-                {data.wm}
-              </Box>
-            </ButtonBase>
-          ))}
-          <Box
-            p={3}
-            sx={{
-              border: "1px solid #aaaaaa",
-            }}
-          ></Box>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          sx={{ height: "70vh" }}
+        >
+          <Grid item>
+            <Box sx={{ overflow: "auto", maxHeight: "70vh" }}>
+              {props.test.map((data: any) => (
+                <Grid item>
+                  <ButtonBase>
+                    <Box
+                      p={3}
+                      sx={{
+                        border: "1px solid #aaaaaa",
+                        textAlign: "left",
+                        overflow: "hidden",
+                        bgcolor: "#f9f9f9",
+                      }}
+                    >
+                      <Typography variant="h6" color="#002000">
+                        {data.song}
+                      </Typography>
+                      <Typography variant="h6" color="#002000">
+                        {data.artist}
+                      </Typography>
+                      <Typography variant="subtitle2" color="#606060">
+                        {data.translater}
+                      </Typography>
+                      <Typography variant="subtitle2" color="#606060">
+                        {data.liked}
+                      </Typography>
+                      <Typography
+                        variant="subtitle2"
+                        color="#606060"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {data.wm}
+                      </Typography>
+                    </Box>
+                  </ButtonBase>
+                </Grid>
+              ))}
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box
+              sx={{
+                border: "1px solid #aaaaaa",
+                height: "63.7vh",
+                width: "30vw",
+                bgcolor: "#f9f9f9",
+              }}
+            >
+              <Typography variant="h5" color="#aaaaaa">
+                アイテムを選択してください
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
       </Paper>
     </Modal>
