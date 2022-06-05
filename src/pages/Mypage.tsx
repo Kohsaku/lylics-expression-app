@@ -22,6 +22,7 @@ const Mypage: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [testData, setTestData] = useState([
     {
+      id: "1",
       translater: "userA",
       artist: "Red hot chilli peppers",
       song: "By the way",
@@ -30,6 +31,7 @@ const Mypage: React.FC = () => {
       liked: 21,
     },
     {
+      id: "2",
       translater: "userA",
       artist: "Red hot chilli peppers",
       song: "By the way",
@@ -38,6 +40,7 @@ const Mypage: React.FC = () => {
       liked: 10,
     },
     {
+      id: "3",
       translater: "userA",
       artist: "Red hot chilli peppers",
       song: "By the way",

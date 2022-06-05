@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Paper, Grid, Box, ButtonBase, Typography } from "@mui/material";
 
 interface PROPS {
@@ -8,6 +8,7 @@ interface PROPS {
 }
 
 const FavoriteModal: React.FC<PROPS> = (props) => {
+  const [selected, setSelected] = useState(false);
   return (
     <Modal
       open={props.open}
@@ -20,7 +21,6 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
           color: "#ffffff",
           height: "70vh",
           borderRadius: "25px",
-          alignItems: "center",
           pt: 6,
         }}
       >
@@ -33,8 +33,8 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
           <Grid item>
             <Box sx={{ overflow: "auto", maxHeight: "70vh" }}>
               {props.test.map((data: any) => (
-                <Grid item>
-                  <ButtonBase>
+                <Grid item key={data.id}>
+                  <ButtonBase onClick={() => setSelected(true)}>
                     <Box
                       p={3}
                       sx={{
@@ -74,18 +74,26 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
             </Box>
           </Grid>
           <Grid item>
-            <Box
-              sx={{
-                border: "1px solid #aaaaaa",
-                height: "63.7vh",
-                width: "30vw",
-                bgcolor: "#f9f9f9",
-              }}
-            >
-              <Typography variant="h5" color="#aaaaaa">
-                アイテムを選択してください
-              </Typography>
-            </Box>
+            <ButtonBase>
+              <Box
+                sx={{
+                  border: "1px solid #aaaaaa",
+                  height: "63.7vh",
+                  width: "30vw",
+                  bgcolor: "#f9f9f9",
+                }}
+              >
+                {selected ? (
+                  <Typography variant="h5" color="#aaaaaa">
+                    歌詞
+                  </Typography>
+                ) : (
+                  <Typography variant="h5" color="#aaaaaa">
+                    アイテムを選択してください
+                  </Typography>
+                )}
+              </Box>
+            </ButtonBase>
           </Grid>
         </Grid>
       </Paper>
