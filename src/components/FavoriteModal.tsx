@@ -7,8 +7,37 @@ interface PROPS {
   test: any;
 }
 
+interface DATA {
+  id: string;
+  song: string;
+  artist: string;
+  translater: string;
+  liked: number;
+  wm: string;
+}
+
 const FavoriteModal: React.FC<PROPS> = (props) => {
   const [selected, setSelected] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({
+    id: "",
+    song: "",
+    artist: "",
+    translater: "",
+    liked: 0,
+    wm: "",
+  });
+
+  const handleClick: any = (data: DATA) => {
+    setSelected(true);
+    setSelectedItem({
+      id: data.id,
+      song: data.song,
+      artist: data.artist,
+      translater: data.translater,
+      liked: data.liked,
+      wm: data.wm,
+    });
+  };
   return (
     <Modal
       open={props.open}
@@ -34,7 +63,7 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
             <Box sx={{ overflow: "auto", maxHeight: "70vh" }}>
               {props.test.map((data: any) => (
                 <Grid item key={data.id}>
-                  <ButtonBase onClick={() => setSelected(true)}>
+                  <ButtonBase onClick={() => handleClick(data)}>
                     <Box
                       p={3}
                       sx={{
@@ -85,7 +114,7 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
               >
                 {selected ? (
                   <Typography variant="h5" color="#aaaaaa">
-                    歌詞
+                    {selectedItem.id}
                   </Typography>
                 ) : (
                   <Typography variant="h5" color="#aaaaaa">
