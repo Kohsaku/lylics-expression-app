@@ -50,10 +50,6 @@ const Mypage: React.FC = () => {
     },
   ]);
 
-  const handleSearchOpen = () => {
-    setOpenModal(true);
-  };
-
   const handleClose: HANDLE_CLOSE = () => {
     setOpenModal(false);
   };

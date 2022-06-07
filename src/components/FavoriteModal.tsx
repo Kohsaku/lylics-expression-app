@@ -14,6 +14,7 @@ interface DATA {
   translater: string;
   liked: number;
   wm: string;
+  jm: string;
 }
 
 const FavoriteModal: React.FC<PROPS> = (props) => {
@@ -25,6 +26,7 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
     translater: "",
     liked: 0,
     wm: "",
+    jm: "",
   });
 
   const handleClick: any = (data: DATA) => {
@@ -36,13 +38,14 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
       translater: data.translater,
       liked: data.liked,
       wm: data.wm,
+      jm: data.jm,
     });
   };
   return (
     <Modal
       open={props.open}
       onClose={props.close}
-      sx={{ width: "75%", top: "15%", left: "12%" }}
+      sx={{ width: "90%", top: "15%", left: "5%" }}
     >
       <Paper
         sx={{
@@ -55,8 +58,8 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
       >
         <Grid
           container
-          direction="row"
           justifyContent="center"
+          direction="row"
           sx={{ height: "70vh" }}
         >
           <Grid item>
@@ -69,7 +72,6 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
                       sx={{
                         border: "1px solid #aaaaaa",
                         textAlign: "left",
-                        overflow: "hidden",
                         bgcolor: "#f9f9f9",
                       }}
                     >
@@ -107,15 +109,61 @@ const FavoriteModal: React.FC<PROPS> = (props) => {
               <Box
                 sx={{
                   border: "1px solid #aaaaaa",
-                  height: "63.7vh",
+                  height: "63.75vh",
                   width: "30vw",
                   bgcolor: "#f9f9f9",
+                  overflow: "auto",
+                  maxHeight: "70vh",
+                  textAlign: "left",
                 }}
               >
                 {selected ? (
-                  <Typography variant="h5" color="#aaaaaa">
-                    {selectedItem.id}
-                  </Typography>
+                  <Box>
+                    <Typography variant="h5" color="#002000">
+                      Song: {selectedItem.song}
+                    </Typography>
+                    <Typography variant="h5" color="#002000">
+                      Artist: {selectedItem.artist}
+                    </Typography>
+                    <Typography variant="subtitle2" color="#002000">
+                      翻訳者: {selectedItem.translater}
+                    </Typography>
+                    <Typography variant="subtitle2" color="#002000">
+                      いいね数: {selectedItem.liked}
+                    </Typography>
+                    <Typography variant="h5" color="#002000">
+                      英詞
+                    </Typography>
+                    <Box
+                      sx={{
+                        border: "1px solid #aaaaaa",
+                        maxheight: "20vh",
+                        width: "30vw",
+                        bgcolor: "#f9f9f9",
+                        overflow: "auto",
+                      }}
+                    >
+                      <Typography variant="h5" color="#002000">
+                        {selectedItem.wm}
+                      </Typography>
+                    </Box>
+                    <Typography variant="h5" color="#002000">
+                      和訳
+                    </Typography>
+                    <Box
+                      sx={{
+                        border: "1px solid #aaaaaa",
+                        maxheight: "20vh",
+                        width: "30vw",
+                        bgcolor: "#f9f9f9",
+                        overflow: "auto",
+                      }}
+                    >
+                      <Typography variant="h5" color="#002000">
+                        {selectedItem.jm}
+                      </Typography>
+                    </Box>
+                  </Box>
                 ) : (
                   <Typography variant="h5" color="#aaaaaa">
                     アイテムを選択してください
