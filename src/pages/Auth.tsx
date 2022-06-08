@@ -19,6 +19,9 @@ import Modal from "@mui/material/Modal";
 import SendIcon from "@mui/icons-material/Send";
 import CameraIcon from "@mui/icons-material/Camera";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { auth, provider } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 function getModalStyle() {
   const top = 50;
@@ -81,6 +84,7 @@ const avatarAddedImageStyle = {
 const theme = createTheme();
 
 const Auth: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -88,6 +92,11 @@ const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+
+  const signInEmail = async () => {
+    await signInWithEmailAndPassword(auth, email, password);
+    navigate("/");
+  };
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
