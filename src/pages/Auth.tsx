@@ -19,9 +19,15 @@ import Modal from "@mui/material/Modal";
 import SendIcon from "@mui/icons-material/Send";
 import CameraIcon from "@mui/icons-material/Camera";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { auth, provider } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, provider, storage } from "../firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithPopup,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function getModalStyle() {
   const top = 50;
@@ -95,6 +101,37 @@ const Auth: React.FC = () => {
 
   const signInEmail = async () => {
     await signInWithEmailAndPassword(auth, email, password);
+    navigate("/");
+  };
+
+  const signUpEmail = async () => {
+    const authUser = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    let url = "";
+    if (avatarImage) {
+      const S =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join("");
+      const fileName = randomChar + "_" + avatarImage.name;
+      const storageRef = ref(storage, `avatars/${fileName}`);
+      await uploadBytes(storageRef, avatarImage);
+      url = await getDownloadURL(ref(storage, `avatars/${fileName}`));
+    }
+    await updateProfile(authUser.user, {
+      displayName: username,
+      photoURL: url,
+    });
+    navigate("/");
+  };
+
+  const signInWithGoogle = async () => {
+    await signInWithPopup(auth, provider).catch((err) => alert(err.message));
     navigate("/");
   };
 
