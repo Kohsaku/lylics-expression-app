@@ -1,7 +1,7 @@
 const Musixmatch = require("musixmatch");
 const init = {
   // Required from Musixmatch.com
-  apikey: "3c77046c4a9009e6428a7a88defb2de1",
+  apikey: "",
 
   // Optional default 'https://api.musixmatch.com/ws/1.1/'
   // baseURL will be prepended to `url` unless `url` is absolute.
