@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import {
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ImportModal from "../components/ImportModal";
+import { msx } from "../musixMatch";
 
 type HANDLE_CLOSE = {
   (): void;
@@ -48,6 +49,21 @@ const Post: React.FC = () => {
   const [lylics, setLylics] = useState(
     "Standing in line to see the show tonight And there's a light on, heavy glow. By the way, I tried to say I'd be there waiting for Dani, the girl, is singing songs to me beneath the marquee, overload. Steak knife, card shark Con job, boot cut Skin that flick, she’s such a little DJ To get there quick by street but not the freeway Turn that trick to make a little leeway Beat that nic, but not the way that we playDogtown, blood bath Rib cage, soft tail Standing in line to see the show tonight And there’s a light on, heavy glow By the way, I tried to say I’d be there waiting for Black jack, dope dick Pawn shop, quick pick Kiss that dyke, I know you want to hold one Not on strike but I’m about to bowl one Bite that mic, I know you never stole one Girls that like a story, so I told one Song bird, main line Cash back, hard top"
   );
+
+  useEffect(() => {
+    msx
+      .matcherSubtitle({
+        q_track: "sexy and i know it",
+        q_artist: "lmfao",
+        f_subtitle_length: 200,
+      })
+      .then(function (data: any) {
+        console.log(data);
+      })
+      .catch(function (err: any) {
+        console.log(err);
+      });
+  });
 
   const handleSearchOpen = () => {
     setOpenModal(true);
