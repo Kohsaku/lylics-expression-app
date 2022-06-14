@@ -15,7 +15,6 @@ import {
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ImportModal from "../components/ImportModal";
-import { msx } from "../musixMatch";
 
 type HANDLE_CLOSE = {
   (): void;
@@ -51,19 +50,29 @@ const Post: React.FC = () => {
   );
 
   useEffect(() => {
-    msx
-      .matcherSubtitle({
-        q_track: "sexy and i know it",
-        q_artist: "lmfao",
-        f_subtitle_length: 200,
-      })
-      .then(function (data: any) {
-        console.log(data);
-      })
-      .catch(function (err: any) {
-        console.log(err);
-      });
-  });
+    var MusixmatchApi = require("../../build/javascript-client/src/index");
+    var defaultClient = MusixmatchApi.ApiClient.instance;
+    var key = defaultClient.authentications["key"];
+    key.apiKey = "3c77046c4a9009e6428a7a88defb2de1"; // {String}
+    var opts = {
+      format: "json", // {String} output format: json, jsonp, xml.
+    };
+    var trackId = 15445219; // {number}
+    new MusixmatchApi.TrackApi().trackGetGet(
+      trackId,
+      opts,
+      (error: any, data: any, response: any) => {
+        if (error) {
+          console.error(error);
+        } else if (response.text) {
+          data = JSON.parse(response.text);
+          console.log("Returned data:\n%s", JSON.stringify(data, null, 2));
+        } else {
+          throw new Error("bad response");
+        }
+      }
+    );
+  }, []);
 
   const handleSearchOpen = () => {
     setOpenModal(true);
