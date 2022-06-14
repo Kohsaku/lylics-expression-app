@@ -53,7 +53,7 @@ const Post: React.FC = () => {
     var MusixmatchApi = require("../../build/javascript-client/src/index");
     var defaultClient = MusixmatchApi.ApiClient.instance;
     var key = defaultClient.authentications["key"];
-    key.apiKey = "3c77046c4a9009e6428a7a88defb2de1"; // {String}
+    key.apiKey = ""; // {String}
     var opts = {
       format: "json", // {String} output format: json, jsonp, xml.
     };
