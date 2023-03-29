@@ -45,13 +45,13 @@ const SearchModal: React.FC<PROPS> = (props) => {
 
   return (
     <Modal open={props.open} onClose={props.close} sx={{ width: "80%" }}>
-      <Paper>
+      <Paper sx={{ bgcolor: "#001000", top: "50%", left: "50%" }}>
         <Typography variant="h6">検索結果</Typography>
         <Grid container xs={12} sx={{ mt: 3 }}>
           <Paper
             variant="outlined"
             elevation={24}
-            sx={{ width: "40%", maxHeight: "70vh", overflow: "auto" }}
+            sx={{ width: "70%", maxHeight: "70vh", overflow: "auto" }}
           >
             <Grid item>
               {testData.map((data) => (

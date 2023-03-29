@@ -101,6 +101,7 @@ const Auth: React.FC = () => {
 
   const signInEmail = async () => {
     await signInWithEmailAndPassword(auth, email, password);
+    setIsLogin(true);
     navigate("/");
   };
 
@@ -127,6 +128,7 @@ const Auth: React.FC = () => {
       displayName: username,
       photoURL: url,
     });
+    setIsLogin(true);
     navigate("/");
   };
 
@@ -194,6 +196,7 @@ const Auth: React.FC = () => {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+              {/* signup components start */}
               {!isLogin && (
                 <>
                   <CustomTextField
@@ -231,6 +234,8 @@ const Auth: React.FC = () => {
                   </Box>
                 </>
               )}
+              {/* signup components end */}
+              {/* login components start */}
               <CustomTextField
                 margin="normal"
                 required
@@ -269,6 +274,7 @@ const Auth: React.FC = () => {
                 }
                 label="Remember me"
               />
+              {/* login components end */}
               <Button
                 type="submit"
                 fullWidth
@@ -281,6 +287,23 @@ const Auth: React.FC = () => {
                     background: "#800000",
                   },
                 }}
+                onClick={
+                  isLogin
+                    ? async () => {
+                        try {
+                          await signInEmail();
+                        } catch (err: any) {
+                          alert(err.message);
+                        }
+                      }
+                    : async () => {
+                        try {
+                          await signUpEmail();
+                        } catch (err: any) {
+                          alert(err.message);
+                        }
+                      }
+                }
               >
                 Sign In
               </Button>
@@ -296,6 +319,7 @@ const Auth: React.FC = () => {
                     background: "#800000",
                   },
                 }}
+                onClick={signInWithGoogle}
               >
                 SignIn with Google
               </Button>

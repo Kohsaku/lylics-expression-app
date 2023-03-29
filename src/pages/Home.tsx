@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import CurrentFeed from "../components/CurrentFeed";
 import SearchModal from "../components/SearchModal";
+import { useNavigate } from "react-router-dom";
 
 type HANDLE_CLOSE = {
   (): void;
@@ -33,6 +34,8 @@ const theme = createTheme();
 
 const Home: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSearchOpen = () => {
     setOpenModal(true);
@@ -109,6 +112,7 @@ const Home: React.FC = () => {
                     background: "#800000",
                   },
                 }}
+                onClick={() => navigate("/post")}
               >
                 <AddIcon sx={{ color: "#ffffff" }} />
               </Fab>
