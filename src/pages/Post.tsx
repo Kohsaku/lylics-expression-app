@@ -15,10 +15,32 @@ import {
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ImportModal from "../components/ImportModal";
+import { db } from "../firebase";
+import {
+  doc,
+  setDoc,
+  Timestamp,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
+import { selectUser } from "../features/userSlice";
+import { useSelector } from "react-redux";
 
 type HANDLE_CLOSE = {
   (): void;
 };
+
+interface LYLICSDATA {
+  uid: string;
+  disclose: boolean;
+  process: boolean;
+  like: number;
+  song: string;
+  artist: string;
+  japanese: string;
+  english: string;
+  createdAt: any;
+}
 
 const CustomTextField = styled(TextField)({
   "& .MuiInputBase-input": {
@@ -45,33 +67,122 @@ const CustomTextField = styled(TextField)({
 
 const Post: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [lylics, setLylics] = useState(
-    "Standing in line to see the show tonight And there's a light on, heavy glow. By the way, I tried to say I'd be there waiting for Dani, the girl, is singing songs to me beneath the marquee, overload. Steak knife, card shark Con job, boot cut Skin that flick, she’s such a little DJ To get there quick by street but not the freeway Turn that trick to make a little leeway Beat that nic, but not the way that we playDogtown, blood bath Rib cage, soft tail Standing in line to see the show tonight And there’s a light on, heavy glow By the way, I tried to say I’d be there waiting for Black jack, dope dick Pawn shop, quick pick Kiss that dyke, I know you want to hold one Not on strike but I’m about to bowl one Bite that mic, I know you never stole one Girls that like a story, so I told one Song bird, main line Cash back, hard top"
-  );
+  // 入力内容をステートに保存し、保存or投稿ボタンを押すとfirestoreへ保存させる
+  const [lylicsData, setLylicsData] = useState<LYLICSDATA>({
+    uid: "",
+    disclose: false,
+    process: false,
+    like: 0,
+    song: "",
+    artist: "",
+    japanese: "",
+    english: "",
+    createdAt: null,
+  });
+
+  const user = useSelector(selectUser);
+  const lylicsRef = collection(db, "lylics");
+  const docRef = doc(lylicsRef);
+
+  const handleSongChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setLylicsData({ ...lylicsData, song: e.target.value, uid: user.uid });
+  };
+
+  const handleArtistChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setLylicsData({ ...lylicsData, artist: e.target.value });
+  };
+
+  const handleEnglishChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setLylicsData({ ...lylicsData, english: e.target.value });
+  };
+
+  const handleJapaneseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setLylicsData({ ...lylicsData, japanese: e.target.value });
+  };
+
+  const handleDiscloseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLylicsData({ ...lylicsData, disclose: true });
+  };
+
+  const handleCloseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLylicsData({ ...lylicsData, disclose: false });
+  };
+
+  // submitするとfirestoreに保存されるようにする
+  // submit時にtimestampを付与し、processをtrueに変える。
+  // setLylicsDataでstate変更し、setDocを行うとtimestampとprocessが反映されない。
+  // そのためsetDoc内でcreatedAtとprocessに値を入れる。
+  // toDateまでつけなければinvalid data errorになる
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const submitData = {
+      uid: lylicsData.uid,
+      disclose: lylicsData.disclose,
+      process: true,
+      like: lylicsData.like,
+      song: lylicsData.song,
+      artist: lylicsData.artist,
+      japanese: lylicsData.japanese,
+      english: lylicsData.english,
+      createdAt: serverTimestamp(),
+    };
+    setDoc(docRef, submitData);
+    setLylicsData({
+      uid: "",
+      disclose: false,
+      process: false,
+      like: 0,
+      song: "",
+      artist: "",
+      japanese: "",
+      english: "",
+      createdAt: null,
+    });
+  };
+
+  // submitするとfirestoreに保存されるようにする
+  // submit時にtimestampとuidを付与する
+  // toDateまでつけなければinvalid data errorになる
+  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const submitData = {
+      uid: lylicsData.uid,
+      disclose: lylicsData.disclose,
+      process: false,
+      like: lylicsData.like,
+      song: lylicsData.song,
+      artist: lylicsData.artist,
+      japanese: lylicsData.japanese,
+      english: lylicsData.english,
+      createdAt: serverTimestamp(),
+    };
+    setDoc(docRef, submitData);
+    setLylicsData({
+      uid: "",
+      disclose: false,
+      process: false,
+      like: 0,
+      song: "",
+      artist: "",
+      japanese: "",
+      english: "",
+      createdAt: null,
+    });
+  };
 
   useEffect(() => {
-    var MusixmatchApi = require("../../build/javascript-client/src/index");
-    var defaultClient = MusixmatchApi.ApiClient.instance;
-    var key = defaultClient.authentications["key"];
-    key.apiKey = ""; // {String}
-    var opts = {
-      format: "json", // {String} output format: json, jsonp, xml.
+    let urls =
+      "https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=jsonp&callback=callback&q_track=by%20the%20way&q_artist=red%20hot%20chili%20peppers&apikey=3c77046c4a9009e6428a7a88defb2de1";
+    let requests = fetch(urls);
+    const fetchData = async () => {
+      const result = await requests;
+      console.log(result.body);
     };
-    var trackId = 15445219; // {number}
-    new MusixmatchApi.TrackApi().trackGetGet(
-      trackId,
-      opts,
-      (error: any, data: any, response: any) => {
-        if (error) {
-          console.error(error);
-        } else if (response.text) {
-          data = JSON.parse(response.text);
-          console.log("Returned data:\n%s", JSON.stringify(data, null, 2));
-        } else {
-          throw new Error("bad response");
-        }
-      }
-    );
+    fetchData();
   }, []);
 
   const handleSearchOpen = () => {
@@ -101,9 +212,25 @@ const Post: React.FC = () => {
         英語の歌詞をインポートする
       </Button>
       <Grid container component={Box} xs={12}>
-        <Grid item sx={{ mb: "1vh", pl: "4vw" }}>
+        <Grid item sx={{ mb: "1vh", pl: "4vw", width: "30%" }}>
           <Typography variant="h6">曲名</Typography>
+          <CustomTextField
+            variant="standard"
+            InputLabelProps={{ shrink: false }}
+            multiline
+            fullWidth
+            placeholder="曲名を入力してください"
+            onChange={handleSongChange}
+          />
           <Typography variant="h6">アーティスト名</Typography>
+          <CustomTextField
+            variant="standard"
+            InputLabelProps={{ shrink: false }}
+            multiline
+            fullWidth
+            placeholder="アーティスト名を入力してください"
+            onChange={handleArtistChange}
+          />
         </Grid>
         <Grid
           item
@@ -116,7 +243,14 @@ const Post: React.FC = () => {
             <Typography variant="h6">英詞</Typography>
             <Paper sx={{ overflow: "auto", height: "58vh", p: "1vh" }}>
               <Typography variant="h6" sx={{ lineHeight: 2 }}>
-                {lylics}
+                <CustomTextField
+                  variant="outlined"
+                  InputLabelProps={{ shrink: false }}
+                  multiline
+                  fullWidth
+                  placeholder="英詞を入力してください。"
+                  onChange={handleEnglishChange}
+                />
               </Typography>
             </Paper>
           </Grid>
@@ -140,6 +274,7 @@ const Post: React.FC = () => {
                 multiline
                 fullWidth
                 placeholder="和訳を入力してください。"
+                onChange={handleJapaneseChange}
               />
             </Paper>
           </Grid>
@@ -156,9 +291,9 @@ const Post: React.FC = () => {
             >
               最近のフィードへの表示
             </FormLabel>
-            <RadioGroup row>
+            <RadioGroup row defaultValue="false">
               <FormControlLabel
-                value="on"
+                value="true"
                 control={
                   <Radio
                     sx={{
@@ -166,12 +301,13 @@ const Post: React.FC = () => {
                         color: "#004000",
                       },
                     }}
+                    onChange={handleDiscloseChange}
                   />
                 }
                 label="ON"
               />
               <FormControlLabel
-                value="off"
+                value="false"
                 control={
                   <Radio
                     sx={{
@@ -179,42 +315,47 @@ const Post: React.FC = () => {
                         color: "#004000",
                       },
                     }}
+                    onChange={handleCloseChange}
                   />
                 }
                 label="OFF"
               />
             </RadioGroup>
           </FormControl>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              mt: 2,
-              mb: 2,
-              mr: 2,
-              bgcolor: "#001000",
-              "&: hover": {
-                background: "#004000",
-              },
-            }}
-          >
-            save
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              mt: 2,
-              mb: 2,
-              mr: 8,
-              bgcolor: "#001000",
-              "&: hover": {
-                background: "#800000",
-              },
-            }}
-          >
-            post
-          </Button>
+          <form onSubmit={handleSave}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 2,
+                mb: 2,
+                mr: 2,
+                bgcolor: "#001000",
+                "&: hover": {
+                  background: "#004000",
+                },
+              }}
+            >
+              save
+            </Button>
+          </form>
+          <form onSubmit={handleSubmit}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 2,
+                mb: 2,
+                mr: 8,
+                bgcolor: "#001000",
+                "&: hover": {
+                  background: "#800000",
+                },
+              }}
+            >
+              post
+            </Button>
+          </form>
         </Grid>
       </Grid>
       <ImportModal open={openModal} close={handleClose} />

@@ -8,6 +8,7 @@ import {
   Avatar,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useNavigate } from "react-router-dom";
 
 const CurrentFeed: React.FC = () => {
   const [testData, setTestData] = useState([
@@ -35,7 +36,18 @@ const CurrentFeed: React.FC = () => {
       jm: "今夜のショーを見るために......",
       liked: 10,
     },
+    {
+      translater: "userA",
+      artist: "Red hot chilli peppers",
+      song: "By the way",
+      wm: "Standing light.......",
+      jm: "今夜のショーを見るために......",
+      liked: 10,
+    },
   ]);
+
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ my: 2 }}>
       <Typography variant="h5">最近のフィード</Typography>
@@ -52,7 +64,10 @@ const CurrentFeed: React.FC = () => {
           >
             <Grid item>
               {testData.map((data) => (
-                <ButtonBase sx={{ width: "100%" }}>
+                <ButtonBase
+                  sx={{ width: "100%" }}
+                  onClick={() => navigate("overview")}
+                >
                   <Box
                     p={3}
                     sx={{
