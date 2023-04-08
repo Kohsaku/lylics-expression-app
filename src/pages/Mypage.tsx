@@ -77,10 +77,10 @@ const Mypage: React.FC = () => {
       </Grid>
       <Grid container direction="row" xs={12}>
         <Grid item xs={6}>
-          <CurrentFeed />
+          {/* <CurrentFeed /> */}
         </Grid>
         <Grid item xs={6}>
-          <CurrentFeed />
+          {/* <CurrentFeed /> */}
         </Grid>
       </Grid>
       <Button

@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Box, TextField, Typography, Button, Fab } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import CurrentFeed from "../components/CurrentFeed";
 import SearchModal from "../components/SearchModal";
 import { useNavigate } from "react-router-dom";
+import {
+  doc,
+  getDocs,
+  collection,
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
+import { db } from "../firebase";
+import { currentFeed, selectLylics } from "../features/lylicsSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 type HANDLE_CLOSE = {
   (): void;
@@ -36,6 +47,8 @@ const Home: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const navigate = useNavigate();
+  const lylics = useSelector(selectLylics);
+  const dispatch = useDispatch();
 
   const handleSearchOpen = () => {
     setOpenModal(true);
@@ -44,6 +57,38 @@ const Home: React.FC = () => {
   const handleClose: HANDLE_CLOSE = () => {
     setOpenModal(false);
   };
+
+  useEffect(() => {
+    const q = query(
+      collection(db, "lylics"),
+      orderBy("createdAt", "desc"),
+      limit(3)
+    );
+
+    const data = async () => {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        dispatch(
+          currentFeed({
+            uid: doc.data().uid,
+            translater: doc.data().translater,
+            date: doc.data().date,
+            disclose: doc.data().disclose,
+            process: doc.data().process,
+            like: doc.data().like,
+            song: doc.data().song,
+            artist: doc.data().artist,
+            japanese: doc.data().japanese,
+            English: doc.data().English,
+          })
+        );
+      });
+    };
+    return () => {
+      data();
+    };
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,7 +165,7 @@ const Home: React.FC = () => {
           </Box>
         </Grid>
         <Grid item xs={false} sm={4} md={7} component={Box} sx={{ pt: 6 }}>
-          <CurrentFeed />
+          <CurrentFeed lylics={lylics} />
         </Grid>
       </Grid>
       <SearchModal open={openModal} close={handleClose} />

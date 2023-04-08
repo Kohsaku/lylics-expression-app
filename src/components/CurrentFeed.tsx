@@ -10,7 +10,22 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 
-const CurrentFeed: React.FC = () => {
+interface PROPS {
+  lylics: {
+    uid: string;
+    translater: string;
+    date: string;
+    disclose: boolean;
+    process: boolean;
+    like: number;
+    song: string;
+    artist: string;
+    japanese: string;
+    English: string;
+  };
+}
+
+const CurrentFeed: React.FC<PROPS> = (props) => {
   const [testData, setTestData] = useState([
     {
       translater: "userA",
@@ -83,7 +98,7 @@ const CurrentFeed: React.FC = () => {
                         sx={{ mr: 1 }}
                       />
                       <Typography variant="h6" sx={{ mt: 1, ml: 1 }}>
-                        曲名：{data.song}
+                        曲名：{props.lylics.song}
                       </Typography>
                     </Grid>
                     <Typography variant="h6">
