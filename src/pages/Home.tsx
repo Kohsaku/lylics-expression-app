@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, TextField, Typography, Button, Fab } from "@mui/material";
+import {
+  Grid,
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Fab,
+  Paper,
+} from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import CurrentFeed from "../components/CurrentFeed";
@@ -20,6 +28,19 @@ import { useSelector, useDispatch } from "react-redux";
 type HANDLE_CLOSE = {
   (): void;
 };
+
+interface LYLICS {
+  uid: string;
+  translater: string;
+  disclose: boolean;
+  process: boolean;
+  like: number;
+  song: string;
+  artist: string;
+  japanese: string;
+  english: string;
+  createdAt: any;
+}
 
 const CustomTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -45,9 +66,22 @@ const theme = createTheme();
 
 const Home: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [lylics, setLylics] = useState<LYLICS[]>([
+    {
+      uid: "",
+      translater: "",
+      disclose: false,
+      process: false,
+      like: 0,
+      song: "",
+      artist: "",
+      japanese: "",
+      english: "",
+      createdAt: "",
+    },
+  ]);
 
   const navigate = useNavigate();
-  const lylics = useSelector(selectLylics);
   const dispatch = useDispatch();
 
   const handleSearchOpen = () => {
@@ -65,30 +99,29 @@ const Home: React.FC = () => {
       limit(3)
     );
 
+    // firestoreから受けるデータを配列に変換する(現状オブジェクト1つしか受けれていない)
     const data = async () => {
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        dispatch(
-          currentFeed({
-            uid: doc.data().uid,
-            translater: doc.data().translater,
-            date: doc.data().date,
-            disclose: doc.data().disclose,
-            process: doc.data().process,
-            like: doc.data().like,
-            song: doc.data().song,
-            artist: doc.data().artist,
-            japanese: doc.data().japanese,
-            English: doc.data().English,
-          })
-        );
-      });
+      setLylics(
+        querySnapshot.docs.map((doc) => ({
+          uid: doc.data().uid,
+          translater: doc.data().artist,
+          disclose: doc.data().disclose,
+          process: doc.data().process,
+          like: doc.data().like,
+          song: doc.data().song,
+          artist: doc.data().artist,
+          japanese: doc.data().japanese,
+          english: doc.data().english,
+          createdAt: doc.data().createdAt,
+        }))
+      );
+      console.log(lylics);
     };
     return () => {
       data();
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -165,7 +198,36 @@ const Home: React.FC = () => {
           </Box>
         </Grid>
         <Grid item xs={false} sm={4} md={7} component={Box} sx={{ pt: 6 }}>
-          <CurrentFeed lylics={lylics} />
+          {/* currentFeedを箱だけにして、こちらでlylicsをmapする */}
+          {/* <CurrentFeed /> */}
+          <Box sx={{ my: 2 }}>
+            <Typography variant="h5">最近のフィード</Typography>
+            <Box
+              sx={{
+                mx: 4,
+              }}
+            >
+              <Grid container xs={12} sx={{ mt: 3 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={24}
+                  sx={{ width: "100%", maxHeight: "65vh", overflow: "auto" }}
+                >
+                  <Grid item>
+                    {lylics.map((data) => (
+                      <CurrentFeed
+                        song={data.song}
+                        artist={data.artist}
+                        english={data.english}
+                        japanese={data.japanese}
+                        like={data.like}
+                      />
+                    ))}
+                  </Grid>
+                </Paper>
+              </Grid>
+            </Box>
+          </Box>
         </Grid>
       </Grid>
       <SearchModal open={openModal} close={handleClose} />
