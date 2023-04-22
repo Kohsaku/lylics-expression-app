@@ -4,22 +4,39 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 
 interface PROPS {
-  // uid: string;
-  // disclose: boolean;
-  // process: boolean;
+  uid: string;
+  disclose: boolean;
+  process: boolean;
   like: number;
   song: string;
   artist: string;
   japanese: string;
   english: string;
-  // createdAt: any;
+  createdAt: any;
 }
 
 const CurrentFeed: React.FC<PROPS> = (props) => {
   const navigate = useNavigate();
 
+  const propsData = [
+    props.uid,
+    props.disclose,
+    props.process,
+    props.like,
+    props.song,
+    props.artist,
+    props.japanese,
+    props.english,
+    props.createdAt,
+  ];
+
+  const handleClick = (propsData: any) => {
+    // navigate("overview");
+    console.log(propsData);
+  };
+
   return (
-    <ButtonBase sx={{ width: "100%" }} onClick={() => navigate("overview")}>
+    <ButtonBase sx={{ width: "100%" }} onClick={() => handleClick(propsData)}>
       <Box
         p={3}
         sx={{

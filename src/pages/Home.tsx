@@ -216,11 +216,15 @@ const Home: React.FC = () => {
                   <Grid item>
                     {lylics.map((data) => (
                       <CurrentFeed
+                        uid={data.uid}
+                        disclose={data.disclose}
+                        process={data.process}
                         song={data.song}
                         artist={data.artist}
                         english={data.english}
                         japanese={data.japanese}
                         like={data.like}
+                        createdAt={data.createdAt}
                       />
                     ))}
                   </Grid>
