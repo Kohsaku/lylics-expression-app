@@ -40,6 +40,7 @@ interface LYLICSDATA {
   japanese: string;
   english: string;
   createdAt: any;
+  translater: string;
 }
 
 const CustomTextField = styled(TextField)({
@@ -78,11 +79,16 @@ const Post: React.FC = () => {
     japanese: "",
     english: "",
     createdAt: null,
+    translater: "",
   });
 
   const user = useSelector(selectUser);
   const lylicsRef = collection(db, "lylics");
   const docRef = doc(lylicsRef);
+
+  const setTranslaer = () => {
+    setLylicsData({ ...lylicsData, translater: user.displayName });
+  };
 
   const handleSongChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -141,6 +147,7 @@ const Post: React.FC = () => {
       japanese: "",
       english: "",
       createdAt: null,
+      translater: "",
     });
   };
 
@@ -171,6 +178,7 @@ const Post: React.FC = () => {
       japanese: "",
       english: "",
       createdAt: null,
+      translater: "",
     });
   };
 
@@ -183,6 +191,7 @@ const Post: React.FC = () => {
       console.log(result.body);
     };
     fetchData();
+    setTranslaer();
   }, []);
 
   const handleSearchOpen = () => {

@@ -116,7 +116,6 @@ const Home: React.FC = () => {
           createdAt: doc.data().createdAt,
         }))
       );
-      console.log(lylics);
     };
     return () => {
       data();
