@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -12,21 +12,42 @@ import {
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+interface LYLICSDATA {
+  uid: string;
+  disclose: boolean;
+  process: boolean;
+  like: number;
+  song: string;
+  artist: string;
+  japanese: string;
+  english: string;
+  createdAt: any;
+}
 
 const OverView: React.FC = () => {
-  const [lylics, setLylics] = useState(
-    "Standing in line to see the show tonight And there's a light on, heavy glow. By the way, I tried to say I'd be there waiting for Dani, the girl, is singing songs to me beneath the marquee, overload. Steak knife, card shark Con job, boot cut Skin that flick, she’s such a little DJ To get there quick by street but not the freeway Turn that trick to make a little leeway Beat that nic, but not the way that we playDogtown, blood bath Rib cage, soft tail Standing in line to see the show tonight And there’s a light on, heavy glow By the way, I tried to say I’d be there waiting for Black jack, dope dick Pawn shop, quick pick Kiss that dyke, I know you want to hold one Not on strike but I’m about to bowl one Bite that mic, I know you never stole one Girls that like a story, so I told one Song bird, main line Cash back, hard top"
-  );
-
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [lylics, setLylics] = useState(location.state as any);
+
+  useEffect(() => {
+    console.log(lylics);
+  }, [lylics]);
 
   return (
     <Box>
       <Grid container component={Box} xs={12}>
         <Grid item sx={{ mb: "1vh", pl: "4vw", pt: "5vh" }}>
           <Typography variant="h6">曲名</Typography>
+          <Typography variant="h6" sx={{ lineHeight: 2 }}>
+            {lylics.propsData.song}
+          </Typography>
           <Typography variant="h6">アーティスト名</Typography>
+          <Typography variant="h6" sx={{ lineHeight: 2 }}>
+            {lylics.propsData.artist}
+          </Typography>
         </Grid>
         <Grid
           item
@@ -48,7 +69,7 @@ const OverView: React.FC = () => {
             <FavoriteIcon sx={{ color: "#aaaaaa", p: 0.5 }} />
           </IconButton>
           <Typography variant="subtitle2" color="#aaaaaa">
-            21
+            {lylics.propsData.like}
           </Typography>
         </Grid>
         <Grid
@@ -62,7 +83,7 @@ const OverView: React.FC = () => {
             <Typography variant="h6">英詞</Typography>
             <Paper sx={{ overflow: "auto", height: "58vh", p: "1vh" }}>
               <Typography variant="h6" sx={{ lineHeight: 2 }}>
-                {lylics}
+                {lylics.propsData.english}
               </Typography>
             </Paper>
           </Grid>
@@ -79,7 +100,11 @@ const OverView: React.FC = () => {
           </Grid>
           <Grid item xs={5}>
             <Typography variant="h6">和訳</Typography>
-            <Paper sx={{ overflow: "auto", height: "58vh" }}></Paper>
+            <Paper sx={{ overflow: "auto", height: "58vh" }}>
+              <Typography variant="h6" sx={{ lineHeight: 2 }}>
+                {lylics.propsData.japanese}
+              </Typography>
+            </Paper>
           </Grid>
         </Grid>
         <Grid item container justifyContent="flex-end">

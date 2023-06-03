@@ -18,25 +18,26 @@ interface PROPS {
 const CurrentFeed: React.FC<PROPS> = (props) => {
   const navigate = useNavigate();
 
-  const propsData = [
-    props.uid,
-    props.disclose,
-    props.process,
-    props.like,
-    props.song,
-    props.artist,
-    props.japanese,
-    props.english,
-    props.createdAt,
-  ];
+  const lylicsData = {
+    uid: props.uid,
+    disclose: props.disclose,
+    process: props.process,
+    like: props.like,
+    song: props.song,
+    artist: props.artist,
+    japanese: props.japanese,
+    english: props.english,
+    createdAt: props.createdAt,
+  };
+
+  const test = "hoge";
 
   const handleClick = (propsData: any) => {
-    // navigate("overview");
-    console.log(propsData);
+    navigate("overview", { state: { propsData } });
   };
 
   return (
-    <ButtonBase sx={{ width: "100%" }} onClick={() => handleClick(propsData)}>
+    <ButtonBase sx={{ width: "100%" }} onClick={() => handleClick(lylicsData)}>
       <Box
         p={3}
         sx={{
