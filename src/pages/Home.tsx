@@ -20,6 +20,7 @@ import {
   query,
   orderBy,
   limit,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { currentFeed, selectLylics } from "../features/lylicsSlice";
@@ -80,13 +81,36 @@ const Home: React.FC = () => {
       createdAt: "",
     },
   ]);
+  const [searchSongWord, setSearchSongWord] = useState("");
+  const [searchArtistWord, setSearchArtistWord] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const collectionRef = collection(db, "lylics");
 
-  const handleSearchOpen = () => {
+  const handleSongWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchSongWord(e.currentTarget.value);
+    console.log(searchSongWord);
+  }
+
+  const handleArtistWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchArtistWord(e.target.value);
+    console.log(searchArtistWord);
+  }
+
+  const handleSongSearchClick = async() => {
+    const q = query(collectionRef, where("song", "in", searchSongWord));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+    })
     setOpenModal(true);
-  };
+  }
+
+  // const handleSearchOpen = () => {
+  //   setOpenModal(true);
+  // };
 
   const handleClose: HANDLE_CLOSE = () => {
     setOpenModal(false);
@@ -138,7 +162,7 @@ const Home: React.FC = () => {
                 曲名から探す
               </Typography>
               <Grid item>
-                <CustomTextField fullWidth id="song" label="Song" name="song" />
+                <CustomTextField fullWidth id="song" label="Song" name="song" onChange={handleSongWordChange}/>
                 <Button
                   variant="contained"
                   sx={{
@@ -149,7 +173,7 @@ const Home: React.FC = () => {
                       background: "#800000",
                     },
                   }}
-                  onClick={handleSearchOpen}
+                  onClick={handleSongSearchClick}
                 >
                   検索
                 </Button>
@@ -163,10 +187,11 @@ const Home: React.FC = () => {
                   id="artist"
                   label="Artist"
                   name="artist"
+                  onChange={handleArtistWordChange}
                 />
                 <Button
                   variant="contained"
-                  onClick={handleSearchOpen}
+                  onClick={handleSongSearchClick}
                   sx={{
                     mt: 1,
                     ml: 1,
